@@ -9,137 +9,108 @@ the following command:
 
 import unittest
 from library_item import LibraryItem
+from genre import Genre
 
 class TestLibraryItem(unittest.TestCase):
 
     def test_init_valid_inputs_sets_attributes(self):
         # Check if everything is set right with valid inputs
-        user_id = 100
-        name = "John Doe"
-        email = "john.doe@example.com"
-        borrow_status = "ACTIVE"
+        item_id = 101
+        title = "1984"
+        author = "George Orwell"
+        genre = Genre.FICTION
+        is_borrowed = False
 
-        library_item = LibraryItem(user_id, name, email, borrow_status)
+        library_item = LibraryItem(item_id, title, author, genre, is_borrowed)
 
-        self.assertEqual(library_item._LibraryItem__user_id, user_id)
-        self.assertEqual(library_item._LibraryItem__name, name)
-        self.assertEqual(library_item._LibraryItem__email, email)
-        self.assertEqual(library_item._LibraryItem__borrow_status, borrow_status)
+        self.assertEqual(library_item._LibraryItem__item_id, item_id)
+        self.assertEqual(library_item._LibraryItem__title, title)
+        self.assertEqual(library_item._LibraryItem__author, author)
+        self.assertEqual(library_item._LibraryItem__genre, genre)
+        self.assertEqual(library_item._LibraryItem__is_borrowed, is_borrowed)
 
-    def test_init_non_numeric_user_id_raises_exception(self):
-        # Make sure it blows up when user_id isn't a number
-        user_id = "ABC"
-        name = "John Doe"
-        email = "john.doe@example.com"
-        borrow_status = "ACTIVE"
-
-        with self.assertRaises(ValueError) as context:
-            LibraryItem(user_id, name, email, borrow_status)
-        self.assertIn("User ID must be numeric", str(context.exception))
-
-    def test_init_user_id_less_than_100_raises_exception(self):
-        # Make sure it blows up if user_id is less than 100
-        user_id = 50
-        name = "John Doe"
-        email = "john.doe@example.com"
-        borrow_status = "ACTIVE"
+    def test_init_non_numeric_item_id_raises_exception(self):
+        # Make sure it blows up when item_id isn't a number
+        item_id = "ABC"
+        title = "1984"
+        author = "George Orwell"
+        genre = Genre.FICTION
+        is_borrowed = False
 
         with self.assertRaises(ValueError) as context:
-            LibraryItem(user_id, name, email, borrow_status)
-        self.assertIn("User ID must be 100 or greater", str(context.exception))
+            LibraryItem(item_id, title, author, genre, is_borrowed)
+        self.assertIn("Item Id must be numeric", str(context.exception))
 
-    def test_init_blank_name_raises_exception(self):
-        # Make sure it blows up when name is blank
-        user_id = 100
-        name = ""
-        email = "john.doe@example.com"
-        borrow_status = "ACTIVE"
-
-        with self.assertRaises(ValueError) as context:
-            LibraryItem(user_id, name, email, borrow_status)
-        self.assertIn("Name cannot be blank", str(context.exception))
-
-    def test_init_invalid_email_raises_exception(self):
-        # Make sure it blows up if the email is not valid
-        user_id = 100
-        name = "John Doe"
-        email = "invalid-email"
-        borrow_status = "ACTIVE"
+    def test_init_non_boolean_is_borrowed_raises_exception(self):
+        # Make sure it blows up when is_borrowed isn't a boolean
+        item_id = 101
+        title = "1984"
+        author = "George Orwell"
+        genre = Genre.FICTION
+        is_borrowed = "Yes"  # Invalid type, should be a boolean
 
         with self.assertRaises(ValueError) as context:
-            LibraryItem(user_id, name, email, borrow_status)
-        self.assertIn("Invalid email address", str(context.exception))
+            LibraryItem(item_id, title, author, genre, is_borrowed)
+        self.assertIn("Is Borrowed must be a boolean value", str(context.exception))
 
-    def test_init_invalid_borrow_status_raises_exception(self):
-        # Make sure it blows up if borrow_status isn't valid
-        user_id = 100
-        name = "John Doe"
-        email = "john.doe@example.com"
-        borrow_status = "INVALID_STATUS"
+    def test_init_blank_title_raises_exception(self):
+        # Make sure it blows up when title is blank
+        item_id = 101
+        title = ""
+        author = "George Orwell"
+        genre = Genre.FICTION
+        is_borrowed = False
 
         with self.assertRaises(ValueError) as context:
-            LibraryItem(user_id, name, email, borrow_status)
-        self.assertIn("Invalid borrow status", str(context.exception))
+            LibraryItem(item_id, title, author, genre, is_borrowed)
+        self.assertIn("Title cannot be blank", str(context.exception))
 
-    def test_user_id_returns_user_id_attribute(self):
-        # Just check if user_id comes back correctly
-        user_id = 100
-        library_item = LibraryItem(user_id, "John Doe", "john.doe@example.com", "ACTIVE")
+    def test_init_blank_author_raises_exception(self):
+        # Make sure it blows up when author is blank
+        item_id = 101
+        title = "1984"
+        author = ""
+        genre = Genre.FICTION
+        is_borrowed = False
 
-        self.assertEqual(library_item.user_id, user_id)
+        with self.assertRaises(ValueError) as context:
+            LibraryItem(item_id, title, author, genre, is_borrowed)
+        self.assertIn("Author cannot be blank", str(context.exception))
 
-    def test_name_returns_name_attribute(self):
-        # Just check if name comes back correctly
-        name = "John Doe"
-        library_item = LibraryItem(100, name, "john.doe@example.com", "ACTIVE")
+    def test_item_id_returns_item_id_attribute(self):
+        # Just check if item_id comes back correctly
+        item_id = 101
+        library_item = LibraryItem(item_id, "1984", "George Orwell", Genre.FICTION, False)
 
-        self.assertEqual(library_item.name, name)
+        self.assertEqual(library_item.item_id, item_id)
 
-    def test_email_returns_email_attribute(self):
-        # Just check if email comes back correctly
-        email = "john.doe@example.com"
-        library_item = LibraryItem(100, "John Doe", email, "ACTIVE")
+    def test_title_returns_title_attribute(self):
+        # Just check if title comes back correctly
+        title = "1984"
+        library_item = LibraryItem(101, title, "George Orwell", Genre.FICTION, False)
 
-        self.assertEqual(library_item.email, email)
+        self.assertEqual(library_item.title, title)
 
-    def test_borrow_status_returns_borrow_status_attribute(self):
-        # Just check if borrow_status comes back correctly
-        borrow_status = "ACTIVE"
-        library_item = LibraryItem(100, "John Doe", "john.doe@example.com", borrow_status)
+    def test_author_returns_author_attribute(self):
+        # Just check if author comes back correctly
+        author = "George Orwell"
+        library_item = LibraryItem(101, "1984", author, Genre.FICTION, False)
 
-        self.assertEqual(library_item.borrow_status, borrow_status)
+        self.assertEqual(library_item.author, author)
 
-    def test_borrow_item_delinquent_user_raises_exception(self):
-        # Make sure it stops you from borrowing if you're delinquent
-        library_item = LibraryItem(100, "John Doe", "john.doe@example.com", "DELINQUENT")
+    def test_genre_returns_genre_attribute(self):
+        # Just check if genre comes back correctly
+        genre = Genre.FICTION
+        library_item = LibraryItem(101, "1984", "George Orwell", genre, False)
 
-        with self.assertRaises(Exception) as context:
-            library_item.borrow_item()
-        self.assertIn("User is delinquent", str(context.exception))
+        self.assertEqual(library_item.genre, genre)
 
-    def test_borrow_item_non_delinquent_user_returns_message(self):
-        # Check if you get the right message when borrowing is allowed
-        library_item = LibraryItem(100, "John Doe", "john.doe@example.com", "ACTIVE")
+    def test_is_borrowed_returns_is_borrowed_attribute(self):
+        # Just check if is_borrowed comes back correctly
+        is_borrowed = False
+        library_item = LibraryItem(101, "1984", "George Orwell", Genre.FICTION, is_borrowed)
 
-        result = library_item.borrow_item()
-
-        self.assertEqual(result, "Item borrowed successfully")
-
-    def test_return_item_delinquent_user_modifies_status(self):
-        # Make sure status changes from DELINQUENT to ACTIVE when returning
-        library_item = LibraryItem(100, "John Doe", "john.doe@example.com", "DELINQUENT")
-
-        library_item.return_item()
-
-        self.assertEqual(library_item.borrow_status, "ACTIVE")
-
-    def test_return_item_returns_message(self):
-        # Check if you get the right message when returning an item
-        library_item = LibraryItem(100, "John Doe", "john.doe@example.com", "ACTIVE")
-
-        result = library_item.return_item()
-
-        self.assertEqual(result, "Item returned successfully")
+        self.assertEqual(library_item.is_borrowed, is_borrowed)
 
 if __name__ == '__main__':
     unittest.main()
