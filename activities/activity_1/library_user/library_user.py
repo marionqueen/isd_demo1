@@ -1,5 +1,5 @@
 """"
 Description: A class to manage User objects.
-Author: {Student Name}
-Date: {Date}
+Author: Marion Queen Ramos
+Date: 09.02.2024
 """
